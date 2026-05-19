@@ -166,22 +166,49 @@ To follow along, ensure you have:
 
 - Linked Services act like connection strings between ADF and external systems.
 
+- Navigate to the Azure dashboard, find Data Factory, and create a new data factory named 'cross-cloud-integration.'
+
+  ![Linked Service S3](./screenshots/ss13.png)
+
 ### 5a: Create Linked Service for AWS S3
 
-- Go to **Azure Data Factory Studio** → **Manage** → **Linked Services** → `+ New`
-- Select **Amazon S3**, enter `Access Key ID`, `Secret Access Key`, `Bucket Name`, and `Region`.
-- Click `Test Connection`, then `Create`.
+1. Go to **Azure Data Factory Studio** → **Manage** → **Linked Services** → `+ New`.
+
+2. Search and Select **Amazon S3**, enter `Access Key ID`, `Secret Access Key`, `Bucket Name`, and `Region`.
+
+3. Click `Test Connection`, then `Create`.
+
+![Linked Service S3](./screenshots/ss14.png)
 
 ### 5b: Create Linked Service for Azure Blob Storage
 
-- Go to **Azure Data Factory Studio** → **Manage** → **Linked Services** → `+ New`
-- Select **Azure Blob Storage** → Enter **Storage Account Name** and **Access Key**.
-- Click `Test Connection`, then `Create`.
+1. Go to **Azure Data Factory Studio** → **Manage** → **Linked Services** → `+ New`.
 
-### 5c: Create Linked Service for Snowflake
+2. Select **Azure Blob Storage** → name it as `AzureBlobLinkedService` and select Authentication type **Account Key** and enter the previous storage account name that created `awsazurestorageac`.
 
-- Select **Snowflake** → Enter **Account, Database, Schema, Warehouse, Authentication Type**.
-- Click `Test Connection`, then `Create`.
+3. Click `Test Connection`, then `Create`.
+
+![Linked Service azure](./screenshots/ss15.png)
+
+### 5c: Get the Details for Create Linked Service for Snowflake
+
+1. To find Account Name, Go to Snowflake Dashboard → Profile → Account → View Account Details, then Copy ‘Account Identifier’ and past in Account Name.
+
+![Linked Service azure](./screenshots/ss16.png)
+
+2. To find Warehouse, Database Name, Schema Name, Go to Snowflake Dashboard → workspaces → open previous created worksheet, then all details is displayed on the right corner.
+
+![Linked Service azure](./screenshots/ss17.png)
+
+3. User Name and Password are the one you used to login to Snowflake.
+
+### 5d: Create Linked Service for Snowflake
+
+1. Go to **Azure Data Factory Studio** → **Manage** → **Linked Services** → `+ New`.
+
+2. Search for Snowflake and select it. Then, name it as ‘SnowflakeLinkedService’, select name, `Account`, `Database`, `Schema`, `Warehouse`, `Authentication type`, and `User name`, and `Password` then, Click ‘Test connection’ then Create.
+
+![Linked Service azure](./screenshots/ss18.png)
 
 ---
 
