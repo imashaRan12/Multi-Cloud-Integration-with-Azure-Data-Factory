@@ -216,20 +216,35 @@ To follow along, ensure you have:
 
 ### 6a: Create Dataset for AWS S3 Customers Data
 
-- **Azure Data Factory Studio** → **Author** → **Datasets** → `+ New`
-- Search **Amazon S3**, select **Delimited Text**, enter path to `customers.csv`.
+1. Go to **Azure Data Factory Studio** → **Author** → **Datasets** → `+ New`.
+
+2. Search & select **Amazon S3** → select **Delimited Text**.
+
+3. fill in all the information as shown in below screenshot and Click OK.
+
+![Linked Service azure](./screenshots/ss19.png)
 
 ### 6b: Create Dataset for Azure Blob Orders Data
 
-- Repeat the same steps as **6a**, but select **Azure Blob Storage** and use `orders.csv`.
+1. Go to **Azure Data Factory Studio** → **Author** → **Datasets** → `+ New`.
 
-### 6c: Create Dataset for Snowflake Customers Table
+2. Search & select **Azure Blob Storage** → select **Delimited Text**.
 
-- Select **Snowflake Linked Service**, enter **Customers Table** name.
+3. fill in all the information as shown in below screenshot and Click OK.
 
-### 6d: Create Dataset for Snowflake Orders Table
+![Linked Service azure](./screenshots/ss20.png)
 
-- Select **Snowflake Linked Service**, enter **Orders Table** name.
+### 6c: Create Dataset for Snowflake
+
+1. Go to **Azure Data Factory Studio** → **Author** → **Datasets** → `+ New`.
+
+2. Search & select ** Snowflake** → enter Name `Customers_Snowflake` → Select ‘SnowflakeLinkedService’ → Select Table name **Customers** then Click OK.
+
+![Linked Service azure](./screenshots/ss21.png)
+
+3.  Repeat the same steps and create another Datasets with name `Orders_Snowflake` and select **Orders** table in Table Name.
+
+![Linked Service azure](./screenshots/ss22.png)
 
 ---
 
