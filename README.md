@@ -60,19 +60,19 @@ The main objectives of this project are:
 
 To follow along, ensure you have:
 
-✅ **AWS S3 Bucket** (For customer data - `customers.csv`)
+✅ **AWS S3 Bucket** (For customer data)
 
-- Bucket Name: `customers-data-s3-bucket`
-- File Name: `customers.csv`
+- Creating S3 bucket `customers-data-s3-bucket`
+- Uploading `customers.csv`
 
 ✅ **Azure Blob Storage** (For order data - `orders.csv`)
 
-- Container Name: `orders`
-- File Name: `orders.csv`
+- Creating Container `orders`
+- Uploading `orders.csv`
 
 ✅ **Snowflake Account**
 
-- Create tables: `customers` and `orders`
+- Create tables `customers` and `orders`
 
 ✅ **Azure Data Factory (ADF)**
 
@@ -85,21 +85,40 @@ To follow along, ensure you have:
 ### 🔹 **Step 1: Create AWS S3 Bucket and Upload File**
 
 1. Go to **AWS Dashboard** → **S3** → Click `Create bucket`.
+
 2. Enter a unique name, e.g., `customers-data-s3-bucket`, and enable "Block all public access".
+
 3. Click `Create Bucket`.
+   ![Create Bucket](./screenshots/ss1.png)
+
 4. Upload the `customers.csv` file into the bucket.
+   ![Upload File](./screenshots/ss2.png)
 
-### 🔹 **Step 2: Set Up IAM User for ADF Access to S3**
+### 🔹 **Step 2: Configure IAM User for ADF Access to S3**
 
-1. Go to **AWS IAM Console** → Create a new user (`adf-s3-access-user`).
-2. Attach policy `AmazonS3ReadOnlyAccess`.
-3. Generate **Access Key ID** and **Secret Access Key**.
+- To access the bucket from ADF(3rd Party), we have to create an IAM user credentials and assign a permission to it. So,
+
+1. Go to **AWS IAM Console** → Create a new IAM user (`adf-s3-access-user`).
+
+2. Select Attach policies directly option.
+
+3. Attach policy `AmazonS3ReadOnlyAccess`.
+   ![Attach Policy](./screenshots/ss3.png)
+   ![Create user](./screenshots/ss4.png)
+
+4. Select **adf-s3-access-user** the one you just created, Next, Go to the **Security credentials** tab and scroll to **Access Keys** section, then click **Create access key** and select ‘Third-party service’, and save the ‘Access Key’ and ‘Secret Access Key’ or download the csv file for your better.
+   ![Select services](./screenshots/ss5.png)
+   ![Access Keys](./screenshots/ss6.png)
 
 ### 🔹 **Step 3: Create Azure Blob Storage and Upload File**
 
 1. Create a **Storage Account** (`awsazstorageac`).
+
 2. Create a **Container** named `orders`.
+   ![Container Created](./screenshots/ss7.png)
+
 3. Upload `orders.csv` into the `orders` container.
+   ![Upload File](./screenshots/ss8.png)
 
 ### 🔹 **Step 4: Set Up Snowflake (Data Warehouse)**
 
@@ -107,35 +126,45 @@ To follow along, ensure you have:
    ```sql
    CREATE DATABASE SALES_DB;
    ```
+   ![Create DB](./screenshots/ss9.png)
 2. **Create Schema:**
+
    ```sql
    CREATE SCHEMA SALES_DB.SALES_SCHEMA;
    ```
+
+   ![Create DB](./screenshots/ss10.png)
+
 3. **Create Tables:**
 
    ```sql
    CREATE TABLE SALES_DB.SALES_SCHEMA.CUSTOMERS (
-   CUSTOMER_ID NUMBER(38, 0) NOT NULL PRIMARY KEY,
-    FIRST_NAME VARCHAR(16777216),
-    LAST_NAME VARCHAR(16777216),
-    EMAIL VARCHAR(16777216),
-    PHONE VARCHAR(16777216),
-    ADDRESS VARCHAR(16777216)
+   CUSTOMER_ID INT PRIMARY KEY,
+    FIRST_NAME VARCHAR,
+    LAST_NAME VARCHAR,
+    EMAIL VARCHAR,
+    PHONE VARCHAR,
+    ADDRESS VARCHAR
    );
 
    CREATE TABLE SALES_DB.SALES_SCHEMA.ORDERS (
-    ORDER_ID NUMBER(38, 0) NOT NULL PRIMARY KEY,
-    CUSTOMER_ID NUMBER(38, 0),
+    ORDER_ID INT PRIMARY KEY,
+    CUSTOMER_ID INT,
     ORDER_DATE DATE,
     TOTAL_AMOUNT FLOAT,
-    ORD_QTY NUMBER(5, 0)
+    FOREIGN KEY (CUSTOMER_ID) REFERENCES SALES_DB.SALES_SCHEMA.CUSTOMERS(CUSTOMER_ID)
    );
 
    ```
 
+   ![Create DB](./screenshots/ss11.png)
+   ![Create DB](./screenshots/ss12.png)
+
 ---
 
 ## 🔗 **Step 5: Configure Linked Services in ADF**
+
+- Linked Services act like connection strings between ADF and external systems.
 
 ### 5a: Create Linked Service for AWS S3
 
