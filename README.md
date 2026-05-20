@@ -13,7 +13,7 @@ This project is ideal for:
 
 ---
 
-## 📖 Business Problem
+## 📖 **Business Problem**
 
 Companies use different cloud platforms to store data, which makes it hard to bring everything together, therefore,
 
@@ -21,17 +21,13 @@ In this project, we’ll take `customers` and `orders` data from **AWS S3** and 
 
 ---
 
-## 🏗️ **Architecture Overview**
+## 🏗️ **Architecture Overview Diagram**
 
-```plaintext
-1. AWS S3 (Customers Data)  →  Azure Data Factory  →  Snowflake Warehouse
-
-2. Azure Blob Storage (Orders Data) →  Azure Data Factory  →  Snowflake Warehouse
-```
+![Diagram](diagram.png)
 
 ---
 
-## 🎯 Project Objectives
+## 🎯 **Project Objectives**
 
 The main objectives of this project are:
 
@@ -43,7 +39,7 @@ The main objectives of this project are:
 
 ---
 
-## 🧰 Technologies Used
+## 🧰 **Technologies Used**
 
 | Technology         | Purpose                   |
 | ------------------ | ------------------------- |
