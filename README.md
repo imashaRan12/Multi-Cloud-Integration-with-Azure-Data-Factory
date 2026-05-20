@@ -152,6 +152,7 @@ To follow along, ensure you have:
     CUSTOMER_ID INT,
     ORDER_DATE DATE,
     TOTAL_AMOUNT FLOAT,
+    QUANTITY INT,
     FOREIGN KEY (CUSTOMER_ID) REFERENCES SALES_DB.SALES_SCHEMA.CUSTOMERS(CUSTOMER_ID)
    );
 
@@ -248,34 +249,95 @@ To follow along, ensure you have:
 
 ---
 
-## 🔀 **Step 7: Create the ADF Pipeline**
+## 🔀 **Step 7: Build the ADF Pipeline**
 
-1. **Go to Azure Data Factory Studio** → **Author** → **Pipelines** → `+ New Pipeline`.
-2. **Add Copy Data Activity for Customers Data:**
-   - **Source**: Select `Customers_S3`
-   - **Sink**: Select `Customers_Snowflake`
-3. **Add Copy Data Activity for Orders Data:**
-   - **Source**: Select `Orders_Blob`
-   - **Sink**: Select `Orders_Snowflake`
-4. **Enable Staging:** Use an Azure Blob Storage container (`staging`).
-5. Click `Publish All` to save changes.
+1. Go to Azure Data Factory Studio → **Author** → **Pipelines** → `+ New Pipeline` → Name it `S3_n_Azure_Blob_to_Snowflake` →
+   Add **Copy data** activity as shown below.
+
+![Linked Service azure](./screenshots/ss23.png)
+
+2. Add Copy Data Activity for Customers Data. Under **Source tab**, Select `Customer_S3`.
+
+![Linked Service azure](./screenshots/ss24.png)
+
+3. Under **Sink tab**, Select `Customer_Snowflake`.
+
+![Linked Service azure](./screenshots/ss25.png)
+
+4. Under **Mapping tab**, Schemas should be imported if not import it and make sure it’s mapped properly.
+
+![Linked Service azure](./screenshots/ss26.png)
+
+5. Now, go to Azure dashboard → resource group → select your container → Data storage → Containers → + Containers,
+   name it as `staging`.
+
+![Linked Service azure](./screenshots/ss27.png)
+
+6. Now click & open the container `staging` the one you just created, then click on → **Shared access tokens** → select
+   **read, Write, and List permissions**, then select → Start and expiry date/time → now Click on **Generate SAS token and URL**.
+
+![Linked Service azure](./screenshots/ss28.png)
+
+![Linked Service azure](./screenshots/ss29.png)
+
+7. Copy **Blob SAS token, Blob SAS URL** and store them somewhere as you will not be able to access it later.
+
+8. Now, Return to the Azure Data Factory tab. Under Settings→ ensure Enable staging is selected → enter **Storage path** as `staging` → Click `+ New`, name it `Ls_staging_blob_storage`, and choose SAS URI for authentication type. Paste the Blob SAS URL (saved earlier refer to page no 24) into the SAS URL field → Click on Test connection if success click on ‘Create’ else re confirm the SAS URL properly.
+
+![Linked Service azure](./screenshots/ss30.png)
+
+![Linked Service azure](./screenshots/ss31.png)
+
+9. **Now**, Click on **Publish all** and save the changes.
+
+10. Similarly add another **Copy Data** activity for **Orders Data**. Under **Source tab**, Select `Orders_Blob`
+
+![Linked Service azure](./screenshots/ss32.png)
+
+11. Under **Sink tab**, Select `Orders_Snowflake`
+
+![Linked Service azure](./screenshots/ss33.png)
+
+12. Under **Mapping tab**, Schemas should be imported if not import it and make sure it’s mapped properly.
+
+![Linked Service azure](./screenshots/ss34.png)
+
+13. Under Settings → ensure **Enable staging** is selected → enter `Storage path` as staging → Select `Ls_staging_blob_storage`
+    → Test connection if success click on **Publish all**.
+
+![Linked Service azure](./screenshots/ss35.png)
 
 ---
 
 ## ⏳ **Step 8: Create ADF Trigger**
 
 1. **ADF Studio** → **Author** → Select **Pipeline** → Click **Add Trigger**.
-2. Configure schedule as needed.
-3. Click `Publish & Test`.
+
+2. Configure schedule as needed. Click `Publish & Test`.
+
+![Linked Service azure](./screenshots/ss36.png)
+
+![Linked Service azure](./screenshots/ss37.png)
 
 ---
 
 ## ✅ **Step 9: Validate Data in Snowflake**
 
+- Verify Customers Table
+
 ```sql
 SELECT * FROM SALES_DB.SALES_SCHEMA.CUSTOMERS;
+```
+
+![Linked Service azure](./screenshots/ss38.png)
+
+- Verify Orders Table
+
+```sql
 SELECT * FROM SALES_DB.SALES_SCHEMA.ORDERS;
 ```
+
+![Linked Service azure](./screenshots/ss39.png)
 
 ---
 
@@ -284,18 +346,3 @@ SELECT * FROM SALES_DB.SALES_SCHEMA.ORDERS;
 This project showcases how to integrate data across multiple cloud platforms using **Azure Data Factory**, moving customer and order data from **AWS S3 & Azure Blob Storage** into **Snowflake**. The end result is a **unified, cloud-agnostic data pipeline** that enables seamless data ingestion and business analytics.
 
 ---
-
-## 🔗 **Connect with Me**
-
-👤 **Prayag Verma**  
-🔗 **LinkedIn:** [linkedin.com/in/prayagv](https://www.linkedin.com/in/prayagv/)  
-🔗 **GitHub:** [github.com/prayag-verma](https://github.com/prayag-verma)  
-🔗 **Portfolio:** → [profile.aimtocode.com](https://profile.aimtocode.com/)
-
----
-
-## 📄 **License**
-
-This repository is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code as per the license terms.
-
-🚀 Feel free to raise an issue or contribute via pull requests!
